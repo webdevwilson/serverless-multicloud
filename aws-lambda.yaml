@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion : '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: An example serverless API and worker written in Golang.
+Resources:
+
+  Api:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: go1.x
+      Handler: dist/lambda_handler
+      Timeout: 10
+      Events:
+        RootHandler:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+        ProxyHandler:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+      Environment:
+        Variables:
+          MSG: aws-lambda
